@@ -1,0 +1,49 @@
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.password-wrapper .toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 69%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1rem;
+  color: #666;
+}
+
+.password-wrapper .toggle-btn:hover {
+  color: dodgerblue;
+}
+.password-wrapper .toggle-btn.secure {
+  color: green;
+}
+.password-wrapper .toggle-btn.insecure {
+  color: red;
+}
+.confirm-wrapper {
+  position: relative;
+}
+
+.check-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: green;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: red;
+  margin-top: 4px;
+}
