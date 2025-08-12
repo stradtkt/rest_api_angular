@@ -69,4 +69,9 @@ class ClientController extends Controller
         $client->delete();
         return response()->json(['message' => 'Client deleted successfully']);
     }
+    public function countClients()
+    {
+        $count = Clients::count();
+        return response()->json(['count' => $count]);
+    }
 }

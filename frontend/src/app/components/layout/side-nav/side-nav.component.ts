@@ -15,7 +15,10 @@ export class SideNavComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn();
   }
-  isLoggedIn(): boolean {
+  isLoggedIn() {
     return this.authService.isAuthenticated()
+  }
+  onLogout() {
+    this.authService.logout();
   }
 }

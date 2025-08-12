@@ -8,51 +8,54 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    // GET /api/comments
-    public function getAll()
+    public function index()
     {
-        return response()->json(Comment::with(['user', 'post'])->latest()->get());
+        $comments = Comment::with(['post', 'user'])->get();
+        return response()->json($comments);
     }
 
-    // GET /api/comments/{id}
-    public function getById($id)
-    {
-        $comment = Comment::with(['user', 'post'])->findOrFail($id);
-        return response()->json($comment);
-    }
-
-    // POST /api/comments
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'post_id' => 'required|exists:posts,id',
-            'content' => 'required|string',
+            'user_id'  => 'required|exists:users,id',
+            'post_id'  => 'required|exists:posts,id',
+            'content'  => 'required|string|max:1000',
         ]);
 
         $comment = Comment::create($validated);
+
         return response()->json($comment, 201);
     }
 
-    // PUT /api/comments/{id}
-    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function show($id)
+    {
+        $comment = Comment::with(['post', 'user'])->findOrFail($id);
+        return response()->json($comment);
+    }
+
+    public function update(Request $request, $id)
     {
         $comment = Comment::findOrFail($id);
 
         $validated = $request->validate([
-            'content' => 'required|string',
+            'content' => 'sometimes|string|max:1000',
         ]);
 
         $comment->update($validated);
+
         return response()->json($comment);
     }
 
-    // DELETE /api/comments/{id}
-    public function delete($id): \Illuminate\Http\JsonResponse
+    public function destroy($id)
     {
         $comment = Comment::findOrFail($id);
         $comment->delete();
 
-        return response()->json(['message' => 'Comment deleted']);
+        return response()->json(['message' => 'Comment deleted successfully']);
+    }
+
+    public function countComments() {
+        $count = Comment::count();
+        return response()->json([$count]);
     }
 }

@@ -14,9 +14,9 @@ export const components: any[]  = [
   PostCreateComponent,
   PostUpdateComponent,
   CommentListComponent,
+  CommentDetailComponent,
   CommentCreateComponent,
-  CommentUpdateComponent,
-  CommentDetailComponent
+  CommentUpdateComponent
 ];
 
 export * from './posts/post-list/post-list.component';

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Post;
@@ -7,59 +6,51 @@ use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
-    // GET /api/posts
-    public function getPosts()
+    public function index()
     {
-        return response()->json(Post::with('user')->latest()->get());
+        $posts = Post::with(['user', 'comments'])->get();
+        return response()->json($posts);
     }
 
-    // GET /api/posts/{id}
-    public function getPost($id): \Illuminate\Http\JsonResponse
-    {
-        $post = Post::with('user')->findOrFail($id);
-        return response()->json($post);
-    }
-
-    // POST /api/posts
-    public function createPost(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'user_id'   => 'required|exists:users,id',
+            'title'     => 'required|string|max:255',
+            'content'   => 'required|string',
         ]);
-
         $post = Post::create($validated);
         return response()->json($post, 201);
     }
 
-    // PUT /api/posts/{id}
-    public function updatePost(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function show($id)
+    {
+        $post = Post::with(['user', 'comments'])->findOrFail($id);
+        return response()->json($post);
+    }
+
+    public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
-
         $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|required|string',
+            'title'   => 'sometimes|string|max:255',
+            'content' => 'sometimes|string',
         ]);
-
         $post->update($validated);
         return response()->json($post);
     }
 
-    // DELETE /api/posts/{id}
-    public function deletePost($id): \Illuminate\Http\JsonResponse
+    public function destroy($id)
     {
         $post = Post::findOrFail($id);
         $post->delete();
-
-        return response()->json(['message' => 'Post deleted']);
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 
-    // GET /api/posts/count
-    public function countPosts(): \Illuminate\Http\JsonResponse
+    public function countPosts()
     {
         $count = Post::count();
-        return response()->json(['total_posts' => $count]);
+        return response()->json([$count]);
     }
 }
+

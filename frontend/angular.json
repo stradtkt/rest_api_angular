@@ -39,9 +39,10 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/quill/dist/quill.core.css",
               "src/assets/css/nucleo-icons.css",
               "src/assets/css/nucleo-svg.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/assets/css/soft-ui-dashboard.css"
             ],
             "scripts": [
@@ -49,6 +50,7 @@
               "src/assets/js/plugins/perfect-scrollbar.min.js",
               "src/assets/js/plugins/smooth-scrollbar.min.js",
               "src/assets/js/plugins/fullcalendar.min.js",
+              "src/assets/js/plugins/flatpickr.min.js",
               "src/assets/js/plugins/dragula/dragula.min.js",
               "src/assets/js/plugins/jkanban/jkanban.js",
               "src/assets/js/plugins/chartjs.min.js",

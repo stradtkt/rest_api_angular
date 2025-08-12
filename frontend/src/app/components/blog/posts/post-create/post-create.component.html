@@ -1,1 +1,46 @@
-<p>post-create works!</p>
+
+  <div class="container-fluid py-1 mt-7 mb-12 ms-6">
+    <div class="row">
+      <div class="col-12 col-md-10 offset-md-1 offset-md-2 offset-lg-0 offset-xl-0 offset-xxl-0 offset-xxxl-0 offset-0 col-lg-10 col-xl-8 col-xxl-8 col-xxxl-8 col-0">
+        <div class="card shadow-xl bg-gradient-dark">
+          <div class="card-header bg-gradient-dark">
+            <h3 class="gradient-text-primary-light ubuntu-condensed-bold text-2xl">Create A Post</h3>
+            <div class="btn-group">
+              <a routerLink="/blog" class="btn custom-bg-primary-light rounded text-white dm-sans-bold" title="Do you need to log in instead?">Back to Blog</a>
+            </div>
+          </div>
+          <div class="card-body p-3">
+            <form *ngIf="postForm" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+              <div class="row m-2">
+                <div class="col-12 col-md-12">
+                  <div class="row m-2">
+                    <div class="form-group">
+                      <label for="title" class="text-gradient text-primary roboto-bold">Title</label>
+                      <input type="text" name="title" class="form-control color-background bg-gradient-dark text-white" formControlName="title" id="title" placeholder="Title" required />
+                    </div>
+                  </div>
+                  <div class="row m-2">
+                    <div class="form-group">
+                      <label for="content" class="text-primary roboto-bold">Content</label>
+                      <quill-editor
+                        [modules]="{ toolbar: toolbarOptions }"
+                        style="height: 300px"
+                        formControlName="content">
+                      </quill-editor>
+                    </div>
+                  </div>
+                  <div class="row mt-3 mb-3 me-2 ms-2">
+                    <button type="submit" class="btn btn-block text-white custom-bg-primary w-100 d-block dm-sans-bold text-2xl">Create Post</button>
+                    <div class="text-danger roboto-bold mt-1 mb-1" *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched">
+                      <small>Content is required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

@@ -56,15 +56,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class, 'user_role');
-    }
 
-    // Optional: if using custom pivot model UserRole
-    public function userRoles(): HasMany
+
+    // ... your fillable, hidden, casts, etc.
+
+    public function roles()
     {
-        return $this->hasMany(UserRole::class);
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
     public function post(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -73,6 +71,10 @@ class User extends Authenticatable
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+    public function clients(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Clients::class);
     }
     public function upload(Request $request): \Illuminate\Http\JsonResponse
     {

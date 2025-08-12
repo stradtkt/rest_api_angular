@@ -58,7 +58,7 @@
         </div>
       </li>
       <li class="nav-item mt-3" *ngIf="isLoggedIn()">
-        <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white roboto-bold">Blog Links</h6>
+        <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white roboto-bold">Blog</h6>
       </li>
       <li class="nav-item" *ngIf="isLoggedIn()">
         <a data-bs-toggle="collapse" href="#pagesExamples" class="nav-link " aria-controls="pagesExamples" role="button" aria-expanded="false">
@@ -142,7 +142,7 @@
               </a>
             </li>
             <li class="nav-item " *ngIf="isLoggedIn()">
-              <a class="nav-link ">
+              <a class="nav-link " (click)="onLogout()">
                 <span class="sidenav-mini-icon"> L </span>
                 <span class="sidenav-normal text-primary roboto-bold"> Logout </span>
               </a>

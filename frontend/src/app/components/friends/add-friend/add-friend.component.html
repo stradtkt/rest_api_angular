@@ -1,0 +1,15 @@
+<div class="add-friend-form">
+  <h2>Add a Friend</h2>
+
+  <input
+    type="number"
+    placeholder="Enter Receiver ID"
+    [(ngModel)]="receiverId"
+  />
+
+  <button (click)="addFriend()" [disabled]="isLoading" class="btn bg-gradient-info">
+    {{ isLoading ? 'Sending...' : 'Add Friend' }}
+  </button>
+
+  <p *ngIf="message">{{ message }}</p>
+</div>

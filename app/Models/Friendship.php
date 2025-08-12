@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static findOrFail($id)
  * @method static where(string $string, int|string|null $id)
  * @method static forUser(int $userId)
+ * @method static whereRaw(string $string, array $array)
+ * @method static create(array $validated)
  * @property mixed $receiver
  * @property mixed $sender
  * @property mixed $sender_id
@@ -26,7 +28,7 @@ class Friendship extends Model
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function receiver()
+    public function receiver(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }

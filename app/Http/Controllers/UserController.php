@@ -71,11 +71,10 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User deleted']);
     }
-
-    // GET /api/users/count
-    public function count(): \Illuminate\Http\JsonResponse
+    public function countUsers()
     {
-        return response()->json(['total_users' => User::count()]);
+        $count = User::count();
+        return response()->json($count);
     }
 
     // GET /api/users/{id}/welcome
@@ -126,9 +125,15 @@ class UserController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
-    public function countUsers()
+    public function availableFriends($currentUserId)
     {
-        $count = User::count();
-        return response()->json(['count' => $count]);
+        $friends = \App\Models\Friendship::where(function ($q) use ($currentUserId) {
+            $q->where('sender_id', $currentUserId)
+                ->orWhere('receiver_id', $currentUserId);
+        })->pluck('sender_id', 'receiver_id')->flatten();
+
+        return \App\Models\User::where('id', '!=', $currentUserId)
+            ->whereNotIn('id', $friends)
+            ->get();
     }
 }

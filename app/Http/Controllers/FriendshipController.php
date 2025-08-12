@@ -11,74 +11,65 @@ use Illuminate\Support\Facades\Auth;
 
 class FriendshipController extends Controller
 {
-    // GET /api/friendships
-    public function getAllFriendships()
-    {
-        return response()->json(Friendship::with(['sender', 'receiver'])->get());
-    }
-
-    // POST /api/friendships/send
     public function sendRequest(Request $request)
     {
-        $request->validate([
-            'receiver_id' => 'required|exists:users,id|different:' . Auth::id(),
+        $validated = $request->validate([
+            'sender_id'   => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id|different:sender_id',
         ]);
 
-        $existing = Friendship::where([
-            ['sender_id', Auth::id()],
-            ['receiver_id', $request->receiver_id]
-        ])->first();
+        // Check if friendship already exists
+        $exists = Friendship::whereRaw('
+    (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',
+            [$validated['sender_id'], $validated['receiver_id'], $validated['receiver_id'], $validated['sender_id']]
+        )->exists();
 
-        if ($existing) {
-            return response()->json(['message' => 'Friend request already sent or exists.'], 400);
+        if ($exists) {
+            return response()->json(['message' => 'Friend request already exists'], 400);
         }
 
-        $friendship = Friendship::create([
-            'sender_id' => Auth::id(),
-            'receiver_id' => $request->receiver_id,
-            'status' => 'pending'
-        ]);
+        $friendship = Friendship::create($validated);
 
         return response()->json($friendship, 201);
     }
 
-    // POST /api/friendships/respond
-    public function respondToRequest(Request $request)
-    {
-        $request->validate([
-            'friendship_id' => 'required|exists:friendships,id',
-            'action' => 'required|in:accepted,declined'
-        ]);
-
-        $friendship = Friendship::findOrFail($request->friendship_id);
-
-        if ($friendship->receiver_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $friendship->update(['status' => $request->action]);
-
-        return response()->json(['message' => "Friend request {$request->action}"]);
-    }
-
-    // DELETE /api/friendships/{id}
-    public function deleteFriendship($id)
+    public function acceptRequest($id)
     {
         $friendship = Friendship::findOrFail($id);
-
-        if (Auth::id() !== $friendship->sender_id && Auth::id() !== $friendship->receiver_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $friendship->delete();
-
-        return response()->json(['message' => 'Friendship deleted']);
+        $friendship->update(['status' => 'accepted']);
+        return response()->json(['message' => 'Friend request accepted']);
     }
 
-    // GET /api/friendships/pending
-    public function pendingRequests()
+    public function denyRequest($id)
     {
-        $pending = Friendship::where('receiver_id', Auth::id())
+        $friendship = Friendship::findOrFail($id);
+        $friendship->update(['status' => 'denied']);
+        return response()->json(['message' => 'Friend request denied']);
+    }
+
+    public function listFriends()
+    {
+        $userId = auth()->id();
+        $friends = Friendship::where('status', 'accepted')
+            ->where(function ($query) use ($userId) {
+                $query->where('sender_id', $userId)
+                    ->orWhere('receiver_id', $userId);
+            })
+            ->with(['sender', 'receiver'])
+            ->get();
+        $friendsList = $friends->map(function ($friendship) use ($userId) {
+            return $friendship->sender_id == $userId
+                ? $friendship->receiver
+                : $friendship->sender;
+        });
+
+        return response()->json($friendsList);
+    }
+
+    // List pending requests for a user
+    public function pendingRequests($userId)
+    {
+        $pending = Friendship::where('receiver_id', $userId)
             ->where('status', 'pending')
             ->with('sender')
             ->get();
@@ -86,11 +77,19 @@ class FriendshipController extends Controller
         return response()->json($pending);
     }
 
-    // GET /api/friendships/friends
-    public function getFriends(): JsonResponse
-    {
-        $friendshipService = new FriendshipService(Auth::id());
-        return response()->json($friendshipService->getFriendsList());
+    public function countPendingRequests() {
+        $count = Friendship::where('receiver_id', auth()->id())
+            ->where('status', 'pending')
+            ->count();
+        return response()->json(['count' => $count]);
+    }
+    public function countFriends() {
+        $count = Friendship::where('status', 'accepted')
+            ->where(function ($query) {
+                $query->where('sender_id', auth()->id())
+                    ->orWhere('receiver_id', auth()->id());
+            });
+        return response()->json(['count' => $count]);
     }
 
 }

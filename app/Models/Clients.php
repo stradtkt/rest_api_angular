@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(array $validated)
  * @method static findOrFail($id)
+ * @method static count()
  */
 class Clients extends Model
 {

@@ -16,9 +16,4 @@ class Role extends Model
         return $this->belongsToMany(User::class, 'user_role');
     }
 
-    // Optional: if using custom pivot model UserRole
-    public function userRoles(): HasMany
-    {
-        return $this->hasMany(UserRole::class);
-    }
 }

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        localStorage.setItem('auth_token', response.token); // assuming { token: '...' }
+        localStorage.setItem('token', response.token); // assuming { token: '...' }
         this.router.navigate(['/dashboard']).then(d => console.log('Successfully logged in, sending you to dashboard.')); // redirect to protected route
       },
       error: (err) => {

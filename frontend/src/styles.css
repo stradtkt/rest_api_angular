@@ -1,6 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu+Condensed&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-
-
+html, body, app-root {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-image: linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -webkit-linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -moz-linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -ms-linear-gradient(120deg, #232526, #414345) !important;
+}
+#section {
+  /*background-image: linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -webkit-linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -moz-linear-gradient(120deg, #232526, #414345) !important;
+  background-image: -ms-linear-gradient(120deg, #232526, #414345) !important;*/
+}
+#dashboardsExamples > ul > li:nth-child(1n) {
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  padding: 5px;
+}
+#dashboardsExamples > ul > li:nth-child(1n) a span:nth-of-type(2) {
+  color: white !important;
+  transition: all 0.3s ease-in-out;
+}
+#dashboardsExamples > ul > li:nth-child(1n) > a > span,
+#dashboardsExamples > ul > li:nth-child(1n) a {
+  color: white !important;
+  transition: all 0.3s ease-in-out !important;
+  text-align: left !important;
+}
+#dashboardsExamples > ul > li:nth-child(1n):hover {
+  background-color: rgba(33,33,33,0.6);
+  width: 100% !important;
+  color: dodgerblue !important;
+}
+#dashboardsExamples > ul > li:nth-child(1n) a span:nth-of-type(2):hover {
+  color: green !important;
+}
+#dashboardsExamples > ul > li:nth-child(1n) > a > span:hover,
+#dashboardsExamples > ul > li:nth-child(1n) > a:hover {
+  color: dodgerblue !important;
+}
 /*START Fonts*/
 
 
@@ -158,13 +199,6 @@
 
 /*END Fonts*/
 
-
-body {
-  padding: 20px;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
 
 /*START Custom Colors*/
 
@@ -343,3 +377,53 @@ body {
 #sidenav-collapse-main > ul > li:nth-child(1) > a div > i {
   color: #fff !important;
 }
+/*START Quill Editor*/
+
+.ql-container {
+  background-color: #121212;
+  color: #eee;
+  border: 1px solid #333;
+}
+
+.ql-editor.ql-blank::before {
+  color: #666;
+}
+
+.ql-toolbar {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: #eee;
+}
+
+.ql-toolbar button {
+  color: #ccc;
+  background: transparent;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.ql-toolbar button:hover,
+.ql-toolbar button.ql-active {
+  color: #1e90ff;
+  background-color: #333;
+}
+
+.ql-toolbar .ql-picker {
+  color: #ccc;
+  background-color: #1e1e1e;
+  border: none;
+}
+.ql-toolbar .ql-picker-options {
+  background-color: #121212;
+  color: #eee;
+}
+.ql-toolbar .ql-picker-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ql-toolbar .ql-picker-options::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 3px;
+}
+
+/*END Quill Editor*/

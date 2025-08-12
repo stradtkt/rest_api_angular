@@ -12,6 +12,14 @@ class JobController extends Controller
         $jobs = Jobs::with(['user', 'client'])->get();
         return response()->json($jobs);
     }
+    public function getJobsByClient($clientId)
+    {
+        $jobs = Jobs::with(['user', 'client'])
+            ->where('client_id', $clientId)
+            ->get();
+
+        return response()->json($jobs);
+    }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -66,5 +74,10 @@ class JobController extends Controller
         $job = Jobs::findOrFail($id);
         $job->delete();
         return response()->json(['message' => 'Job deleted successfully']);
+    }
+    public function countJobs()
+    {
+        $count = Jobs::count();
+        return response()->json(['count' => $count]);
     }
 }

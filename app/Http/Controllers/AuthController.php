@@ -29,23 +29,36 @@ class AuthController extends Controller
         return response()->json(['token' => $token, 'user' => $user]);
     }
 
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+/*    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required'
         ]);
-
         $user = User::where('email', $request->email)->first();
-
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json(['token' => $token, 'user' => $user]);
+    }*/
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (!auth()->attempt($credentials)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+        $user = auth()->user();
+        $token = $user->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user
+        ]);
     }
+
+
 
     public function logout(Request $request): \Illuminate\Http\JsonResponse
     {

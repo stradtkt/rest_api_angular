@@ -1,9 +1,11 @@
 <app-side-nav></app-side-nav>
-<main id="main" class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+<main id="main" class="flex-fill ms-12 mb-5">
   <app-nav></app-nav>
-  <router-outlet></router-outlet>
-  <app-footer></app-footer>
+  <section id="section">
+    <router-outlet></router-outlet>
+  </section>
 </main>
+<app-footer></app-footer>
 <div class="fixed-plugin">
   <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
     <i class="fa fa-cog py-2"> </i>
